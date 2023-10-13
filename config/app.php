@@ -54,10 +54,7 @@ return [
     |
     */
 
-    'react_app' => [
-        'base_url' => env('REACT_APP_URL', 'http://localhost:3000'), // Set your default React app URL here
-    ],
-    
+    'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
 

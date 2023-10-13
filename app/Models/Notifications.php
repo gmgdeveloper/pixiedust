@@ -18,7 +18,6 @@ class Notifications extends Model
         'from_user_id',
         'notification_type',
         'status',
-        'created_at',
     ];
 
     public function fromUser()

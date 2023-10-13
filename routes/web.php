@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminLoginController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,14 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Define the route for resetting the password
-Route::get('/reset-password/{token}', [AdminLoginController::class, 'resetPasswordLoad'])->name('resetPasswordLoad');
-Route::post('/reset-password', [AdminLoginController::class, 'resetPassword'])->name('resetPassword');
-
-
-
-
-
-
 Auth::routes();
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -43,10 +43,13 @@ class AuthController extends Controller
             $user->token = $token;
             $user->followers = 0;
             $user->following = 0;
+            $user->enable_push_notifications = 1;
+            $user->is_freelancer = 0;
 
             return response()->json([
                 'success' => true, 
                 'data'=> $user, 
+                'access_token'=> $token,
                 'message' => 'Account created successfully'
             ], 
             200);
@@ -102,10 +105,10 @@ class AuthController extends Controller
         
     }
 
-    public function updateProfile(Request $request, $userId): \Illuminate\Http\JsonResponse
+    public function updateProfile(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $user = User::find($userId);
+            $user = auth()->user();
 
             if (!$user) {
                 return response()->json(['success' => false, 'message' => 'User not found'], 404);
@@ -146,19 +149,19 @@ class AuthController extends Controller
                 'data' => $user,
             ], 200);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             if ($e->errorInfo[1] === 1062) { // Username is already taken
                 return response()->json(['success' => false, 'message' => 'User Name is taken choose different!'], 400);
             }
 
             return response()->json(['success' => false, 'message' => "An error occurred".  $e->getMessage()], 500);
         }
-        }
- 
-        public function editProfile(Request $request, $userId): \Illuminate\Http\JsonResponse
-        {
+    }
+
+    public function editProfile(Request $request): \Illuminate\Http\JsonResponse
+    {
         try {
-            $user = User::find($userId);
+            $user = auth()->user();
 
             if (!$user) {
                 return response()->json(['success' => false, 'message' => 'User not found'], 404);
@@ -188,8 +191,10 @@ class AuthController extends Controller
             
             $followersCount = $user->followers_count;
             $followingCount = $user->following_count;
-            $user->followers = $followersCount;
-            $user->following = $followingCount;
+            
+            $responseData = $user->toArray();
+            $responseData['followers'] = $followersCount;
+            $responseData['following'] = $followingCount;
 
             return response()->json([
                 'success' => true,

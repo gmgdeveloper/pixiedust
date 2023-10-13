@@ -47,10 +47,4 @@ class Post extends Model
         return $this->hasMany(Comment::class, 'post_id');
     }
 
-    
-    public function getCommentsCountAttribute()
-    {
-        return $this->comments()->count();
-    }
-
 }
